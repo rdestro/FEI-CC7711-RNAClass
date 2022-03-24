@@ -1,5 +1,3 @@
-import pandas as pd
-import numpy as np
 from sklearn.datasets import load_iris
 
 from sklearn.neural_network import MLPClassifier
@@ -23,8 +21,8 @@ Classificador.fit(features,target)
 predicao = Classificador.predict(features)
 
 plt.subplot(2,2,3)
-plt.scatter(features[:,2], features[:,3], c=predicao,marker='d',cmap='viridis',s=150)
-plt.scatter(features[:,2], features[:,3], c=target,marker='o',cmap='viridis',s=15)
+plt.scatter(features[:,0], features[:,1], c=predicao,marker='d',cmap='viridis',s=150)
+plt.scatter(features[:,0], features[:,1], c=target,marker='o',cmap='viridis',s=15)
 
 
 
@@ -39,19 +37,20 @@ plt.subplot(2,2,2)
 plt.scatter(pca_features[:,0], pca_features[:,1], c=target,marker='o',cmap='viridis')
 
 
+ClassificadorPCA = MLPClassifier(hidden_layer_sizes = (10), alpha=1, max_iter=1000)
+ClassificadorPCA.fit(pca_features,target)
 
 
-Classificador = MLPClassifier(hidden_layer_sizes = (10), alpha=1, max_iter=100)
-Classificador.fit(features,target)
-
-
-predicao = Classificador.predict(features)
+predicao = ClassificadorPCA.predict(pca_features)
 
 plt.subplot(2,2,4)
-plt.scatter(features[:,2], features[:,3], c=predicao,marker='d',cmap='viridis',s=150)
-plt.scatter(features[:,2], features[:,3], c=target,marker='o',cmap='viridis',s=15)
+plt.scatter(pca_features[:,0], pca_features[:,1], c=predicao,marker='d',cmap='viridis',s=150)
+plt.scatter(pca_features[:,0], pca_features[:,1], c=target,marker='o',cmap='viridis',s=15)
 plt.show()
 
 
 plot_confusion_matrix(Classificador, features, target,include_values=True,display_labels=data.target_names)
+plt.show()
+
+plot_confusion_matrix(ClassificadorPCA, pca_features, target,include_values=True,display_labels=data.target_names)
 plt.show()
